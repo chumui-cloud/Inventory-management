@@ -1,20 +1,98 @@
-// Inventory-management.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+#include<iostream>
+#include <vector>
+#include<iomanip>
 
-#include <iostream>
+using namespace std;
 
+class Product
+{
+private:
+	string ProductName;
+	int Quantity;
+	float Price;
+
+public:
+	void soldProduct();
+	void inputProduct();
+	void displayProduct();
+};
+void Product::inputProduct()
+{
+	cout << "Enter Product Name: ";
+	cin >> ProductName;
+	cout << endl;
+
+	cout << "Enter Product Quantity: ";
+	cin >> Quantity;
+	cout << endl;
+
+	cout << "Enter Product Price(per unit): ";
+	cin >> Price;
+	cout << endl;
+	system("cls");
+}
+void Product::displayProduct()
+{
+
+	cout << ProductName << setw(15) << Quantity << setw(15) << Price << endl;
+
+}
 int main()
 {
-    std::cout << "Hello World!\n";
-}
+	vector<Product> products;
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+	do
+	{
+		system("cls");
+		cout << "-----Menu-----" << endl;
+		cout << "Enter your choice!" << endl;
+		cout << "1: Add items to your inventory" << endl;
+		cout << "2: Display items of your inventory" << endl;
+		cout << "3: Exit " << endl;
+		int choice;
+		cin >> choice;
+		switch (choice)
+		{
+		case 1:
+		
+		{
+			system("cls");
+			Product newProduct;
+			newProduct.inputProduct();
+			products.push_back(newProduct);
+			cout << "Do you want to add more?(If yes type y/Y else type any key.)" << endl;
+			string ans;
+			cin >> ans;
+			while (true)
+			{
+				if (ans == "y" || ans == "Y")
+				{
+					Product newProduct;
+					newProduct.inputProduct();
+					products.push_back(newProduct);
+					cout << "Do you want to add more?(If yes type y/Y Else type any letter.)"<<endl;
+					string ans;
+					cin >> ans;
+				}
+				break;
+			}
+				break;
+			}
+		case 2:
+		{
+			system("cls");
+			cout << "Product-Name " << setw(10) << "Quantity " << setw(10) << "Price" << endl;
+			for (int j = 0; j < products.size(); j++)
+			{
+				products[j].displayProduct();
+			}
+			system("pause");
+			break;
+		}
+		case 3:
+			exit(1);
+		default:
+			cout << "Invalid input" << endl;
+		}
+		} while (1);
+	}

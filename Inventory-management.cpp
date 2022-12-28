@@ -10,22 +10,43 @@ private:
 	string ProductName;
 	int Quantity;
 	float Price;
-	int id;
+
 
 public:
-	string pName;
-	int pPrice;
+	int Id;
+	int getQuantity();
+	float getPrice();
+	int getProductId();
+	string getProductName();
 	void soldProduct();
-	void inputProduct();
+	void inputProduct(int id);
 	void displayProduct();
+	void updateQuantity(int q);
 	bool hasName(string n);
 };
 
-void Product::inputProduct()
+string Product::getProductName()
 {
+	return ProductName;
+}
+float Product::getPrice()
+{
+	return Price;
+}
+int Product::getQuantity()
+{
+	return Quantity;
+}
+int Product::getProductId()
+{
+	return Id;
+}
+
+void Product::inputProduct(int id)
+{
+	Id = id;
 	cout << "Enter Product Name: ";
 	cin >> ProductName;
-	pName = ProductName;
 	cout << endl;
 
 	cout << "Enter Product Quantity: ";
@@ -34,7 +55,6 @@ void Product::inputProduct()
 
 	cout << "Enter Product Price(per unit): ";
 	cin >> Price;
-	pPrice = Price;
 	cout << endl;
 	system("cls");
 }
@@ -42,14 +62,14 @@ void Product::inputProduct()
 void Product::displayProduct()
 {
 
-	cout << ProductName << setw(15) << Quantity << setw(15) << Price << endl;
+	cout << Id << setw(10) << ProductName << setw(15) << Quantity << setw(15) << Price << endl;
 
 }
 
 void Product::soldProduct()
 {
 	int sellQuantity;
-	cout << "How much quantity do you want to sell?"<<endl;
+	cout << "How much quantity do you want to sell?" << endl;
 	cin >> sellQuantity;
 	if (sellQuantity <= Quantity)
 	{
@@ -59,13 +79,18 @@ void Product::soldProduct()
 	{
 		cout << "You don't have that much quantity" << endl;
 	}
-	
+
+}
+
+void Product::updateQuantity(int q)
+{
+	Quantity = Quantity + q;
 }
 
 int main()
 {
 	vector<Product> products;
-
+	int id = 0;
 	do
 	{
 		system("cls");
@@ -80,28 +105,41 @@ int main()
 		switch (choice)
 		{
 		case 1:
-		
+
 		{
 			system("cls");
 			string ans;
+			int i;
 			while (true)
 			{
 				Product newProduct;
-				newProduct.inputProduct();
-				products.push_back(newProduct);
+				newProduct.inputProduct(++id);
+				for ( i = 0; i < products.size(); i++)
+				{
+					if (newProduct.getProductName() == products[i].getProductName() && newProduct.getPrice() == products[i].getPrice())
+					{
+						products[i].updateQuantity(newProduct.getQuantity());
+						break;
+					}
+
+				}
+				if (i == products.size())
+				{
+					products.push_back(newProduct);
+				}
 				cout << "Do you want to add more?(If yes type y/Y else type any key.)" << endl;
 				cin >> ans;
 				if (ans != "y" && ans != "Y")
 				{
 					break;
-				}				
+				}
 			}
-				break;
-			}
+			break;
+		}
 		case 2:
 		{
 			system("cls");
-			cout << "Product-Name" << setw(10) << "Quantity" << setw(10) << "Price" << endl;
+			cout << "ID  " << setw(10) << "Product-Name" << setw(10) << "Quantity" << setw(10) << "Price" << endl;
 			for (int j = 0; j < products.size(); j++)
 			{
 				products[j].displayProduct();
@@ -112,23 +150,41 @@ int main()
 		case 3:
 		{
 			system("cls");
+			int check = 0;
 			cout << "Which product do you want to sell?" << endl;
 			string name;
 			cin >> name;
-			int price;
-			cout << "What's the price of the product?" << endl;
-			cin >> price;
-			cout << "Product-Name" << setw(10) << "Quantity" << setw(10) << "Price" << endl;
+			system("cls");
+			cout << "ID  " << setw(10) << "Product-Name" << setw(10) << "Quantity" << setw(10) << "Price" << endl;
 			for (int i = 0; i < products.size(); i++)
 			{
-				if (name != products[i].pName || price!= products[i].pPrice)
+				if (name == products[i].getProductName())
 				{
-					cout << "Sorry, there exist no such product" << endl;
-					break;					
+					products[i].displayProduct();
 				}
-				products[i].displayProduct();
-				products[i].soldProduct();
-				break;
+			}
+			cout << endl << "Enter the Id of the product" << endl;
+			int I;
+			cin >> I;
+			for (int i = 0; i < products.size(); i++)
+			{
+				if (name == products[i].getProductName() && I==products[i].getProductId())
+				{
+					products[i].soldProduct();
+					cout << endl;
+					cout << "After selling the product" << endl;
+					cout << endl;
+					cout << "ID  " << setw(10) << "Product-Name" << setw(10) << "Quantity" << setw(10) << "Price" << endl;
+					products[i].displayProduct();
+
+					break;
+				}
+				check++;
+
+			}
+			if (check == products.size())
+			{
+				cout << "Sorry product doesn't exist!" << endl;
 			}
 			system("pause");
 			break;
@@ -138,5 +194,5 @@ int main()
 		default:
 			cout << "Invalid input" << endl;
 		}
-		} while (1);
-	}
+	} while (1);
+}

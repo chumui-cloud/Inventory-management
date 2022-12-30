@@ -1,7 +1,7 @@
 #include<iostream>
 #include <vector>
 #include<iomanip>
-
+#include<string.h>
 using namespace std;
 
 class Product
@@ -18,11 +18,11 @@ public:
 	float getPrice();
 	int getProductId();
 	string getProductName();
-	void soldProduct();
+	void sellProduct();
 	void inputProduct(int id);
 	void displayProduct();
 	void updateQuantity(int q);
-	bool hasName(string n);
+
 };
 
 string Product::getProductName()
@@ -66,7 +66,7 @@ void Product::displayProduct()
 
 }
 
-void Product::soldProduct()
+void Product::sellProduct()
 {
 	int sellQuantity;
 	cout << "How much quantity do you want to sell?" << endl;
@@ -158,33 +158,45 @@ int main()
 			cout << "ID  " << setw(10) << "Product-Name" << setw(10) << "Quantity" << setw(10) << "Price" << endl;
 			for (int i = 0; i < products.size(); i++)
 			{
-				if (name == products[i].getProductName())
+				string s = products[i].getProductName();
+				
+				if (strstr(s.c_str(), name.c_str()))
 				{
 					products[i].displayProduct();
 				}
-			}
-			cout << endl << "Enter the Id of the product" << endl;
-			int I;
-			cin >> I;
-			for (int i = 0; i < products.size(); i++)
-			{
-				if (name == products[i].getProductName() && I==products[i].getProductId())
-				{
-					products[i].soldProduct();
-					cout << endl;
-					cout << "After selling the product" << endl;
-					cout << endl;
-					cout << "ID  " << setw(10) << "Product-Name" << setw(10) << "Quantity" << setw(10) << "Price" << endl;
-					products[i].displayProduct();
-
-					break;
-				}
-				check++;
-
+				else
+					check++;
 			}
 			if (check == products.size())
 			{
-				cout << "Sorry product doesn't exist!" << endl;
+				system("cls");
+				cout << "Sorry product doesn't exist" << endl;
+			}
+			else
+			{
+				cout << endl << "Enter the Id of the product" << endl;
+				int I,i;
+				cin >> I;
+				for (i = 0; i < products.size(); i++)
+				{
+					string s = products[i].getProductName();
+					if ((strstr(s.c_str(), name.c_str()) && I == products[i].getProductId()))
+					{
+						products[i].sellProduct();
+						cout << endl;
+						cout << "After selling the product" << endl;
+						cout << endl;
+						cout << "ID  " << setw(10) << "Product-Name" << setw(10) << "Quantity" << setw(10) << "Price" << endl;
+						products[i].displayProduct();
+
+						break;
+					}
+				}
+				if (i == products.size())
+				{
+					system("cls");
+					cout << "Sorry product doesn't exist" << endl;
+				}
 			}
 			system("pause");
 			break;

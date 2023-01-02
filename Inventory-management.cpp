@@ -4,8 +4,6 @@
 #include<string.h>
 using namespace std;
 
-int checkQuantity=0;
-
 class Product
 {
 private:
@@ -22,7 +20,7 @@ public:
 	int getProductId();
 	string getProductName();
 	float getTotalSoldPrice();
-	void sellProduct();
+	bool sellProduct();
 	void inputProduct(int id);
 	void displayProduct();
 	void updateQuantity(int q);
@@ -75,21 +73,18 @@ void Product::displayProduct()
 
 }
 
-void Product::sellProduct()
+bool Product::sellProduct()
 {
 	cout << "How much quantity do you want to sell?" << endl;
 	cin >> sellQuantity;
 	if (sellQuantity <= Quantity)
 	{
 		Quantity = Quantity - sellQuantity;
-		checkQuantity = 0;
-	}
-	else
-	{
-		cout << "You don't have that much quantity" << endl;
-		checkQuantity = 1;
-	}
+		return true;
 
+	}
+	cout << "Sorry. You do not have enough product";
+	return false;
 }
 
 void Product::updateQuantity(int q)
@@ -136,7 +131,7 @@ int main()
 			{
 				Product newProduct;
 				newProduct.inputProduct(++id);
-				for ( i = 0; i < products.size(); i++)
+				for (i = 0; i < products.size(); i++)
 				{
 					if (newProduct.getProductName() == products[i].getProductName() && newProduct.getPrice() == products[i].getPrice())
 					{
@@ -181,7 +176,7 @@ int main()
 			for (int i = 0; i < products.size(); i++)
 			{
 				string s = products[i].getProductName();
-				
+
 				if (strstr(s.c_str(), name.c_str()))
 				{
 					products[i].displayProduct();
@@ -197,25 +192,27 @@ int main()
 			else
 			{
 				cout << endl << "Enter the Id of the product" << endl;
-				int I,i;
+				int I, i;
 				cin >> I;
-				system("cls");
+				cout << endl;
 				for (i = 0; i < products.size(); i++)
 				{
-					string s = products[i].getProductName();
-					if ((strstr(s.c_str(), name.c_str()) && I == products[i].getProductId()))
+					if ((I == products[i].getProductId()))
 					{
-						products[i].sellProduct();
-						soldProducts.push_back(products[i]);
-						if (checkQuantity == 1)
+						if (products[i].sellProduct() == false)
+						{
 							break;
+						}
 						else
 						{
+							soldProducts.push_back(products[i]);
 							cout << endl;
+							system("cls");
 							cout << "After selling the product" << endl;
 							cout << endl;
 							cout << "ID  " << setw(10) << "Product-Name" << setw(10) << "Quantity" << setw(15) << "  Price(per unit in Tk)" << endl;
 							products[i].displayProduct();
+							cout << endl;
 
 							break;
 						}
@@ -227,6 +224,7 @@ int main()
 					cout << "Sorry product doesn't exist" << endl;
 				}
 			}
+			cout << endl;
 			system("pause");
 			break;
 		}
@@ -235,14 +233,14 @@ int main()
 			system("cls");
 			float tot = 0;
 			cout << "The sold products are given below" << endl << endl;
-			cout << "ID  " << setw(10) << " Product-Name" << setw(10) << " Quantity" << setw(10) << "   Price(per unit in Tk)"<< setw(15) << "   Price(total unit in Tk)" << endl;
+			cout << "ID  " << setw(10) << " Product-Name" << setw(10) << " Quantity" << setw(10) << "   Price(per unit in Tk)" << setw(15) << "   Price(total unit in Tk)" << endl;
 			for (int i = 0; i < soldProducts.size(); i++)
 			{
 				soldProducts[i].displayStatistics();
 				tot = tot + soldProducts[i].getTotalSoldPrice();
 			}
 
-			cout << endl << endl << "Total Price of All sold items is: " << tot<< "Tk" << endl;;
+			cout << endl << endl << "Total Price of All sold items is: " << tot << " Tk" << endl;;
 			system("pause");
 			break;
 		}

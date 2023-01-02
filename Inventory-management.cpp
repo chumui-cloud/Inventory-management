@@ -25,6 +25,7 @@ public:
 	void displayProduct();
 	void updateQuantity(int q);
 	void displayStatistics();
+	void editInventory();
 
 };
 
@@ -102,6 +103,58 @@ void Product::displayStatistics()
 
 }
 
+
+void Product::editInventory()
+{
+	do
+	{
+		system("cls");
+		cout << "Select an option for editing the product information" << endl;
+		cout << "1: For editing product name" << endl;
+		cout << "2: For editing product quantity" << endl;
+		cout << "3: For editing product price" << endl;
+		cout << "4: Exit" << endl;
+		int c;
+		cin >> c;
+		switch (c)
+		{
+		case 1:
+		{
+			system("cls");
+			cout << "Enter the new name for the product" << endl;
+			string newName;
+			cin >> newName;
+			ProductName = newName;
+			break;
+		}
+		case 2:
+		{
+			system("cls");
+			cout << "Enter the new quantity for the product" << endl;
+			int q;
+			cin >> q;
+			Quantity = q;
+			break;
+		}
+		case 3:
+		{
+			system("cls");
+			cout << "Enter the new price for the product" << endl;
+			int p;
+			cin >> p;
+			Price = p;
+			break;
+		}
+		case 4:
+			return;
+		default:
+			cout << "Invalid input" << endl;
+			system("pause");
+		}
+	} while (1);
+
+}
+
 int main()
 {
 	vector<Product> products;
@@ -116,7 +169,9 @@ int main()
 		cout << "2: Display items of your inventory" << endl;
 		cout << "3: Sell product" << endl;
 		cout << "4: Display sold products " << endl;
-		cout << "5: Exit " << endl;
+		cout << "5: Edit inventory " << endl;
+		cout << "6: Exit " << endl;
+		cout << endl;
 		int choice;
 		cin >> choice;
 		switch (choice)
@@ -245,9 +300,51 @@ int main()
 			break;
 		}
 		case 5:
+		{
+			while (true)
+			{
+				system("cls");
+				cout << "ID  " << setw(10) << "Product-Name" << setw(10) << "Quantity" << setw(10) << "  Price(per unit in Tk)" << endl;
+				for (int j = 0; j < products.size(); j++)
+				{
+					products[j].displayProduct();
+				}
+				cout << endl << endl;
+				cout << "Which product do you want to edit? (Enter the id)" << endl;
+				int p_id, i;
+				cin >> p_id;
+				for (i = 0; i < products.size(); i++)
+				{
+					if ((p_id == products[i].getProductId()))
+					{
+						products[i].editInventory();
+						system("cls");
+						cout << "After editing the product information" << endl << endl;
+						cout << "ID  " << setw(10) << "Product-Name" << setw(10) << "Quantity" << setw(10) << "  Price(per unit in Tk)" << endl;
+						products[i].displayProduct();
+						break;
+					}
+				}
+				if (i == products.size())
+				{
+					cout << "Sorry the id is invalid" << endl;
+				}
+				cout << "Do you want to edit more?(If yes type y/Y else type any key.)" << endl;
+				string ans;
+				cin >> ans;
+				if (ans != "y" && ans != "Y")
+				{
+					break;
+				}
+			}
+			break;
+		}
+		case 6:
 			exit(1);
+			break;
 		default:
 			cout << "Invalid input" << endl;
+			system("pause");
 		}
 	} while (1);
 }

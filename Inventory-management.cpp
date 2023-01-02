@@ -26,7 +26,6 @@ public:
 	void updateQuantity(int q);
 	void displayStatistics();
 	void editInventory();
-
 };
 
 string Product::getProductName()
@@ -170,7 +169,8 @@ int main()
 		cout << "3: Sell product" << endl;
 		cout << "4: Display sold products " << endl;
 		cout << "5: Edit inventory " << endl;
-		cout << "6: Exit " << endl;
+		cout << "6: Delete product" << endl;
+		cout << "7: Exit " << endl;
 		cout << endl;
 		int choice;
 		cin >> choice;
@@ -340,6 +340,44 @@ int main()
 			break;
 		}
 		case 6:
+		{
+			while (true)
+			{
+				system("cls");
+				cout << "ID  " << setw(10) << "Product-Name" << setw(10) << "Quantity" << setw(10) << "  Price(per unit in Tk)" << endl;
+				for (int j = 0; j < products.size(); j++)
+				{
+					products[j].displayProduct();
+				}
+				cout << endl << endl;
+				cout << "Which product do you want to delete? (Enter the id)" << endl;
+				int p_id, i;
+				cin >> p_id;
+				for (i = 0; i < products.size(); i++)
+				{
+					if ((p_id == products[i].getProductId()))
+					{
+						products.erase(products.begin() + i);
+						system("cls");
+						cout << "The product is deleted successfully" << endl << endl;
+						break;
+					}
+				}
+				if (i == products.size())
+				{
+					cout << "Sorry the id is invalid" << endl;
+				}
+				cout << "Do you want to edit more?(If yes type y/Y else type any key.)" << endl;
+				string ans;
+				cin >> ans;
+				if (ans != "y" && ans != "Y")
+				{
+					break;
+				}
+			}
+			break;
+		}
+		case 7:
 			exit(1);
 			break;
 		default:

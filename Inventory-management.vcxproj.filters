@@ -18,5 +18,8 @@
     <ClCompile Include="Inventory-management.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Product.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
